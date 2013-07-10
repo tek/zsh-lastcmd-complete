@@ -1,0 +1,13 @@
+#autoload
+
+local h cmd cmdline lines
+h=$(history -1)
+cmdline=$h[(w)2,$]
+cmd=$cmdline[(w)1]
+if zstyle -s ":completion:last-cmd-complete:lastcmd-output:transform" $cmd trans; then
+  cmdline=$($trans $cmdline)
+fi
+setopt aliases
+lines=$(eval $=cmdline)
+lines=(${(f)lines})
+_values "output line" $lines
